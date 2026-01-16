@@ -45,6 +45,14 @@ const eventSchema = new mongoose.Schema(
       required: true,
       min: 1,
     },
+    availableSeats: {
+      type: Number,
+      required: true,
+      min: 0,
+      default: function () {
+        return this.capacity;
+      }
+    },
 
     status: {
       type: String,
@@ -74,4 +82,5 @@ const eventSchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("Event", eventSchema);
+const eventModel = mongoose.model("Event", eventSchema);
+module.exports = eventModel;

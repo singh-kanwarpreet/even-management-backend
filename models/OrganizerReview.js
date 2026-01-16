@@ -26,7 +26,6 @@ const organizerReviewSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-organizerReviewSchema.index({ organizerId: 1, userId: 1 }, { unique: true });
 
 const organizerReviewModel = mongoose.model(
   "OrganizerReview",

@@ -29,7 +29,6 @@ const organizerSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-organizerSchema.index({ organizationName: 1, managedBy: 1 }, { unique: true });
 
 const organizerModel = mongoose.model("Organizer", organizerSchema);
 
