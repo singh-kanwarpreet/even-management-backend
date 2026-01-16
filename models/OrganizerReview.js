@@ -26,7 +26,6 @@ const organizerReviewSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-
 const organizerReviewModel = mongoose.model(
   "OrganizerReview",
   organizerReviewSchema,

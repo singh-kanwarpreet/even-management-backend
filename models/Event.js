@@ -51,7 +51,7 @@ const eventSchema = new mongoose.Schema(
       min: 0,
       default: function () {
         return this.capacity;
-      }
+      },
     },
 
     status: {
@@ -79,7 +79,7 @@ const eventSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 const eventModel = mongoose.model("Event", eventSchema);

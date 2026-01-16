@@ -29,7 +29,6 @@ const organizerSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-
 const organizerModel = mongoose.model("Organizer", organizerSchema);
 
 module.exports = organizerModel;

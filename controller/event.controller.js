@@ -2,7 +2,6 @@ const Event = require("../models/Event");
 const registerationModel = require("../models/Registration");
 
 const eventCreate = async (req, res) => {
-
   try {
     const {
       imageUrl,
@@ -13,7 +12,7 @@ const eventCreate = async (req, res) => {
       location,
       mode,
       capacity,
-      eligibilityRules, 
+      eligibilityRules,
     } = req.body;
 
     const existingEvent = await Event.findOne({
@@ -23,7 +22,9 @@ const eventCreate = async (req, res) => {
     if (existingEvent) {
       return res
         .status(400)
-        .json({ message: "You have already created an event with this title." });
+        .json({
+          message: "You have already created an event with this title.",
+        });
     }
     const event = await Event.create({
       title,
@@ -33,10 +34,10 @@ const eventCreate = async (req, res) => {
       location,
       mode,
       capacity,
-      status: "UPCOMING",           
-      organizerId: req.user._id,    
+      status: "UPCOMING",
+      organizerId: req.user._id,
       eligibilityRules: eligibilityRules || { minAge: 0, maxAge: 100 },
-      imageUrl,                     
+      imageUrl,
     });
 
     res.status(201).json({
@@ -59,23 +60,23 @@ const eventGetAll = async (req, res) => {
   }
 };
 
-const eventUserRegister = async(req,res)=>{
-  const {eventId}=req.params;
-  try{
-    const registeration=await registerationModel.create({
-      userId:req.user._id,
-      eventId
+const eventUserRegister = async (req, res) => {
+  const { eventId } = req.params;
+  try {
+    const registeration = await registerationModel.create({
+      userId: req.user._id,
+      eventId,
     });
     res.status(201).json({
-      message:"Registration successful",
-      registeration
+      message: "Registration successful",
+      registeration,
     });
-    const event=await Event.findById(eventId);
-    if(event){
+    const event = await Event.findById(eventId);
+    if (event) {
       event.availableSeats -= 1;
       await event.save();
     }
-  }catch(error){
+  } catch (error) {
     console.error("Error registering user:", error);
     res.status(500).json({ message: "Internal Server Error" });
   }

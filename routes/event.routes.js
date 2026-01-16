@@ -36,7 +36,7 @@ router.post(
   handleValidationErrors,
   uploadToCloudinary("image"),
 
-  eventController.eventCreate
+  eventController.eventCreate,
 );
 
 router.get("/all", eventController.eventGetAll);
@@ -48,7 +48,7 @@ router.post(
   [param("eventId").isMongoId().withMessage("Invalid event ID")],
   handleValidationErrors,
   eligibilityRules,
-  eventController.eventUserRegister
+  eventController.eventUserRegister,
 );
 
 module.exports = router;

@@ -39,7 +39,7 @@ router.post(
       .withMessage("Description is required for organizers"),
   ],
   handleValidationErrors,
-  authController.signUp
+  authController.signUp,
 );
 
 // Login
@@ -50,7 +50,7 @@ router.post(
     body("password").notEmpty().withMessage("Password is required"),
   ],
   handleValidationErrors,
-  authController.login
+  authController.login,
 );
 
 router.get("/user/logout", authController.logOut);
