@@ -6,7 +6,7 @@ const eventSchema = new mongoose.Schema(
       url: {
         type: String,
         default:
-          "https://media.istockphoto.cohttps://media.istockphoto.com/id/1218975473/photo/group-of-college-student-friends-meeting-and-talking-in-busy-communal-campus-building.jpg?s=612x612&w=0&k=20&c=ggYncioFDbZjXryC923y3Jmdc3uNFAsmZML-ftZYXYI=m/...",
+          "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8c3BlY2lhbCUyMGV2ZW50fGVufDB8fDB8fHww",
       },
       publicId: {
         type: String,
