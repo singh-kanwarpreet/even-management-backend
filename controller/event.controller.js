@@ -1,5 +1,7 @@
 const Event = require("../models/Event");
 const registerationModel = require("../models/Registration");
+const mongoose = require("mongoose");
+
 const {
   deleteFromCloudStorage,
   uploadToCloudStorage,
