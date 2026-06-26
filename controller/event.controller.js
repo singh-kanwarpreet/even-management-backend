@@ -102,25 +102,78 @@ const eventGetAll = async (req, res) => {
   }
 };
 
+
 const eventUserRegister = async (req, res) => {
   const { eventId } = req.params;
+
+  const session = await mongoose.startSession();
+
   try {
-    const registeration = await registerationModel.create({
+    session.startTransaction();
+
+    // Prevent duplicate registration
+    const existingRegistration = await registerationModel.findOne({
       userId: req.user._id,
       eventId,
-    });
-    res.status(201).json({
-      message: "Registration successful",
-      registeration,
-    });
-    const event = await Event.findById(eventId);
-    if (event) {
-      event.availableSeats -= 1;
-      await event.save();
+    }).session(session);
+
+    if (existingRegistration) {
+      await session.abortTransaction();
+      return res.status(400).json({
+        message: "User already registered",
+      });
     }
+
+    // Atomically decrement seat only if seats are available
+    const event = await Event.findOneAndUpdate(
+      {
+        _id: eventId,
+        availableSeats: { $gt: 0 },
+      },
+      {
+        $inc: { availableSeats: -1 },
+      },
+      {
+        new: true,
+        session,
+      }
+    );
+
+    if (!event) {
+      await session.abortTransaction();
+      return res.status(400).json({
+        message: "No seats available or event not found",
+      });
+    }
+
+    // Create registration
+    const registration = await registerationModel.create(
+      [
+        {
+          userId: req.user._id,
+          eventId,
+        },
+      ],
+      { session }
+    );
+
+    // Commit both operations
+    await session.commitTransaction();
+
+    return res.status(201).json({
+      message: "Registration successful",
+      registration: registration[0],
+    });
   } catch (error) {
-    console.error("Error registering user:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    await session.abortTransaction();
+
+    console.error(error);
+
+    return res.status(500).json({
+      message: "Internal Server Error",
+    });
+  } finally {
+    session.endSession();
   }
 };
 
